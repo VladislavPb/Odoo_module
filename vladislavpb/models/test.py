@@ -10,7 +10,6 @@ class SaleWithTest(models.Model):
     
     _inherit = 'sale.order'
 
-    '''Реализовать почему не срабатывает при создании новой формы'''
     def _random_num():
         number = round(random.uniform(0, 1000000), 2)
         return "{:,}".format(number)
@@ -32,11 +31,6 @@ class SaleWithTest(models.Model):
                     total = json.loads(record.tax_totals_json)['amount_total']
                     total = "{:,}".format(total)
                     record.sale_test = f'{total} - {date}'
-
-    '''Условие о как минимум трехсекундном промежутке между Quotation date и текущим моментом -
-    это предотвращение срабатывания функции _update_test() во время создания пустой формы, 
-    не имеющей товаров в таблице. Вместо этого сработает дефолтная функция _random_num(), 
-    как того требует техзадание'''
 
     @api.constrains('sale_test')
     def _check_len(self):
